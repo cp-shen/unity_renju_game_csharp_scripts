@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System;
+using System.Runtime.InteropServices;
 
 public class JsonWrapper{
     public IList<GameTrace> gameTrace { get; set; }
 }
 
-public class GameTrace {
-    public int order { get; set; }
-    public string player { get; set; }
-    public int x { get; set; }
-    public int y { get; set; }
+public struct GameTrace {
+    public int order;
+    public string player;
+    public int x;
+    public int y;
     public GameTrace (int order, bool isBlack, int x, int y)
     {
         this.order = order;
@@ -23,30 +23,14 @@ public class GameTrace {
 public enum GameState{
     WhitePlay, BlackPlay, WhiteWin, BlackWin
 }
-    
-public class PlayTuple{
-    private Vector2Int _boardPos;
-    private int _sequence;
-    private GameObject _gameObject;
-    
-    public Vector2Int BoardPos{
-        get{ return _boardPos; }
-        set{ _boardPos = value; }
-    }
 
-    public int Sequence{
-        get{ return _sequence; }
-        set{ _sequence = value; }
-    }
-
-    public GameObject GameObject{
-        get{ return _gameObject; }
-        set{ _gameObject = value; }
-    }
-
-    public PlayTuple(Vector2Int boardPos, int sequence, GameObject gameObject){
-        _boardPos = boardPos;
-        _sequence = sequence;
-        _gameObject = gameObject;
-    }
+public static class LimitChecker {
+    [DllImport("player_limit", EntryPoint="player_limit", CallingConvention=CallingConvention.Cdecl)]  
+    [return:MarshalAs(UnmanagedType.I1)]  
+    // returns false if given step is not allowed
+    public static extern bool player_limit([MarshalAs(UnmanagedType.LPStr)] string game_data, [MarshalAs(UnmanagedType.LPStr)] string step_data); 
 }
+
+public class EmptyGameDataException : Exception { }
+public class MaxPlayerException : Exception { }
+public class PlayerLimitException : Exception { }

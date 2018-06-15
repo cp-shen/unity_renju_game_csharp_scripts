@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public static class WinChecker{
-	public static bool CheckWin(Dictionary<Vector2Int, PlayTuple> playTrace, Vector2Int position){
+	public static bool CheckWin(Dictionary<Vector2Int, GameTrace> playTrace, Vector2Int position){
 		// from left to right
 		Vector2Int checkPos = new Vector2Int(position.x - 4, position.y);
 		for (int i = 0; i < 5; i++){
@@ -47,7 +47,7 @@ public static class WinChecker{
 		return false;
 	}
 
-	private static bool CheckRenjuRightWard(Dictionary<Vector2Int, PlayTuple> playTrace, Vector2Int position){
+	private static bool CheckRenjuRightWard(Dictionary<Vector2Int, GameTrace> playTrace, Vector2Int position){
 		for (int i = 0; i < 5; i++){
 			if (!playTrace.ContainsKey(position)){
 				return false;
@@ -57,7 +57,7 @@ public static class WinChecker{
 		return true;
 	}
 
-	private static bool CheckRenjuUpWard(Dictionary<Vector2Int, PlayTuple> playTrace, Vector2Int position){
+	private static bool CheckRenjuUpWard(Dictionary<Vector2Int, GameTrace> playTrace, Vector2Int position){
 		for (int i = 0; i < 5; i++){
 			if (!playTrace.ContainsKey(position)){
 				return false;
@@ -68,7 +68,7 @@ public static class WinChecker{
 	}
 
 
-	private static bool CheckRenjuRightUpWard(Dictionary<Vector2Int, PlayTuple> playTrace, Vector2Int position){
+	private static bool CheckRenjuRightUpWard(Dictionary<Vector2Int, GameTrace> playTrace, Vector2Int position){
 		for (int i = 0; i < 5; i++){
 			if (!playTrace.ContainsKey(position)){
 				return false;
@@ -79,7 +79,7 @@ public static class WinChecker{
 		return true;
 	}
 
-	private static bool CheckRenjuRightDownWard(Dictionary<Vector2Int, PlayTuple> playTrace, Vector2Int position){
+	private static bool CheckRenjuRightDownWard(Dictionary<Vector2Int, GameTrace> playTrace, Vector2Int position){
 		for (int i = 0; i < 5; i++){
 			if (!playTrace.ContainsKey(position)){
 				return false;
