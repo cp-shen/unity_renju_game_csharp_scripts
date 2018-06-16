@@ -49,8 +49,8 @@ public class Player : MonoBehaviour {
 	}
 
     public void PlayerAddStep(GameTrace gameTrace) {
-        if ((_gameDataHandler.GameState == GameState.BlackPlay && gameTrace.player == "white")
-            || (_gameDataHandler.GameState == GameState.WhitePlay && gameTrace.player == "black")) {
+        if ((_gameDataHandler.GameState != GameState.WhitePlay && gameTrace.player == "white")
+            || (_gameDataHandler.GameState != GameState.BlackPlay && gameTrace.player == "black")) {
             return;
         }
         //Debug.Log("in PlayerAddStep:" + " GameState = " + _gameDataHandler.GameState + ", _isBlack = " + _isBlack +
@@ -75,8 +75,9 @@ public class Player : MonoBehaviour {
     }
 
     public void PlayerRegret() {
-        if ((_gameDataHandler.GameState == GameState.BlackPlay && !_isBlack)
-            || (_gameDataHandler.GameState == GameState.WhitePlay && _isBlack)) {
+        if ((_gameDataHandler.GameState != GameState.BlackPlay && _isBlack)
+            || (_gameDataHandler.GameState != GameState.WhitePlay && !_isBlack)
+            || (_gameDataHandler.Turn <= 1)) {
             return;
         }
         try {
@@ -112,16 +113,17 @@ public class Player : MonoBehaviour {
         }
 
         if (_isBot) {
-            if ((_gameDataHandler.GameState == GameState.BlackPlay && _isBlack)
-                || (_gameDataHandler.GameState == GameState.WhitePlay && !_isBlack)) {
-                try {
-                    GameTrace gameTrace = AiDriver.GetAiStep(GameDataHandler.Instance.GameToJson());
-                    PlayerAddStep(gameTrace);
-                } 
-                catch (EmptyGameDataException) {
-                    Debug.Log("EmptyGameData");
-                }
-            }
+            if ((_gameDataHandler.GameState != GameState.BlackPlay && _isBlack)
+                || (_gameDataHandler.GameState != GameState.WhitePlay && !_isBlack)) {
+                return;
+            } 
+            try {
+                GameTrace gameTrace = AiDriver.GetAiStep(GameDataHandler.Instance.GameToJson());
+                PlayerAddStep(gameTrace);
+            } 
+            catch (EmptyGameDataException) {
+                Debug.Log("EmptyGameData");
+            } 
             return;
         }
 

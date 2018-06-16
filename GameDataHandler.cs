@@ -67,14 +67,15 @@ public sealed class GameDataHandler {
             throw new PlayerLimitException();
         }
         try {
-            _totalPlayTrace.Add(new Vector2Int(gameTrace.x, gameTrace.y), gameTrace); 
-            _playSequence.Add(gameTrace.order, new Vector2Int(gameTrace.x, gameTrace.y));
             if(gameTrace.player == "black") {
+                _totalPlayTrace.Add(new Vector2Int(gameTrace.x, gameTrace.y), gameTrace); 
                 _blackPlayTrace.Add(new Vector2Int(gameTrace.x, gameTrace.y), gameTrace); 
             }
-            else {
+            else if(gameTrace.player == "white") {
+                _totalPlayTrace.Add(new Vector2Int(gameTrace.x, gameTrace.y), gameTrace); 
                 _whitePlayTrace.Add(new Vector2Int(gameTrace.x, gameTrace.y), gameTrace); 
             }
+            _playSequence.Add(gameTrace.order, new Vector2Int(gameTrace.x, gameTrace.y));
         }
         catch (ArgumentException exc) {
             // already have this key
